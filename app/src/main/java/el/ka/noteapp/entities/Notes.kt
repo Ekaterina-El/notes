@@ -3,6 +3,7 @@ package el.ka.noteapp.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "notes")
 data class Notes(
@@ -30,7 +31,7 @@ data class Notes(
 
     @ColumnInfo(name = "color")
     var color: String
-) {
+): Serializable {
     override fun toString(): String {
         return "$title : $dateTime"
     }
