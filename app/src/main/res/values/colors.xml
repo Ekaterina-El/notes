@@ -15,4 +15,9 @@
     <color name="black">#10141c</color>
     <color name="color_yellow">#FFd633</color>
     <color name="color_blue">#4e33FF</color>
+    <color name="note_color1">#59851B</color>
+    <color name="note_color2">#B1473F</color>
+    <color name="note_color3">#3074A1</color>
+    <color name="note_color4">#A64526</color>
+    <color name="note_color5">#0D7E73</color>
 </resources>

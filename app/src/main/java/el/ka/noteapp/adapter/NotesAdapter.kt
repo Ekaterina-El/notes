@@ -1,5 +1,6 @@
 package el.ka.noteapp.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +24,12 @@ class NotesAdapter(private val notesList: List<Notes>): RecyclerView.Adapter<Not
         holder.itemView.tv_note_title.text = noteInfo.title
         holder.itemView.tv_note_description.text = noteInfo.noteText
         holder.itemView.tv_note_date_time.text = noteInfo.dateTime
+        if (noteInfo.color != null) {
+            holder.itemView.note_cv.setCardBackgroundColor(Color.parseColor(noteInfo.color))
+
+        }
     }
 
     override fun getItemCount(): Int = notesList.size
 }
+
