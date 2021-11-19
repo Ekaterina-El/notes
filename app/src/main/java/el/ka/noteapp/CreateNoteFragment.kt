@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import el.ka.noteapp.database.NotesDatabase
@@ -20,6 +21,7 @@ import el.ka.noteapp.utils.MAIN_ACTIVITY
 import el.ka.noteapp.utils.NoteBottomSheet
 import el.ka.noteapp.utils.showToast
 import kotlinx.android.synthetic.main.fragment_create_note.*
+import kotlinx.android.synthetic.main.fragment_note_bottom_sheets.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,6 +29,7 @@ import java.util.*
 class CreateNoteFragment : BaseFragment() {
     private lateinit var currentDateTime: String
     var selectedColor = "#171C26"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

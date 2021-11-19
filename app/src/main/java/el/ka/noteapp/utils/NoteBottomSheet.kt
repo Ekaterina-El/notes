@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -15,17 +17,18 @@ import el.ka.noteapp.R
 import kotlinx.android.synthetic.main.fragment_note_bottom_sheets.*
 
 class NoteBottomSheet : BottomSheetDialogFragment() {
-    var selectedColor = "#171C26"
+    private lateinit var fNotes: ArrayList<FrameLayout>
+    private lateinit var colorImages: ArrayList<ImageView>
 
     companion object {
         fun newInstance(): NoteBottomSheet {
-            val args = Bundle()
             val fragment = NoteBottomSheet()
-            fragment.arguments = args
+            fragment.arguments = Bundle()
             return fragment
         }
     }
 
+    @SuppressLint("RestrictedApi", "InflateParams")
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
 
@@ -37,39 +40,7 @@ class NoteBottomSheet : BottomSheetDialogFragment() {
         val behavior = param.behavior
 
         if (behavior is BottomSheetBehavior<*>) {
-            behavior.setBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    var state = ""
-                    when (newState) {
-                        BottomSheetBehavior.STATE_DRAGGING -> {
-                            state = "DRAGGING"
-                        }
-
-                        BottomSheetBehavior.STATE_SETTLING -> {
-                            state = "SETTLING"
-                        }
-
-                        BottomSheetBehavior.STATE_EXPANDED -> {
-                            state = "EXPANDED"
-                        }
-
-                        BottomSheetBehavior.STATE_COLLAPSED -> {
-                            state = "COLLAPSED"
-                        }
-
-                        BottomSheetBehavior.STATE_HIDDEN -> {
-                            state = "HIDDEN"
-                            dismiss()
-                            behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                        }
-                    }
-                }
-
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-                }
-
-            })
+            behavior.setBottomSheetCallback(AppBottomSheetCallback(behavior) { dismiss() })
         }
     }
 
@@ -83,60 +54,36 @@ class NoteBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        colorImages = arrayListOf(img_note1, img_note2, img_note3, img_note4, img_note5)
+        fNotes = arrayListOf(fNote1, fNote2, fNote3, fNote4, fNote5)
         setListener()
     }
 
-    @SuppressLint("NewApi")
     private fun setListener() {
-        fNote1.setOnClickListener {
-            dissableAllImagesNote()
-            selectedColor = MAIN_ACTIVITY.getColor(R.color.note_color1).toString()
-            img_note1.setImageResource(R.drawable.ic_tick)
-
-            val intent = Intent("bottom_sheet_action")
-            intent.putExtra("color", "color1")
-            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
-        }
-
-        fNote2.setOnClickListener {
-            dissableAllImagesNote()
-            selectedColor = requireActivity().getColor(R.color.note_color2).toString()
-            val intent = Intent("bottom_sheet_action")
-            intent.putExtra("color", "color2")
-            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
-        }
-
-        fNote3.setOnClickListener {
-            dissableAllImagesNote()
-            selectedColor = requireActivity().getColor(R.color.note_color3).toString()
-            val intent = Intent("bottom_sheet_action")
-            intent.putExtra("color", "color3")
-            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
-        }
-
-        fNote4.setOnClickListener {
-            dissableAllImagesNote()
-            selectedColor = requireActivity().getColor(R.color.note_color4).toString()
-            val intent = Intent("bottom_sheet_action")
-            intent.putExtra("color", "color4")
-            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
-        }
-
-        fNote5.setOnClickListener {
-            dissableAllImagesNote()
-            selectedColor = requireActivity().getColor(R.color.note_color5).toString()
-            val intent = Intent("bottom_sheet_action")
-            intent.putExtra("color", "color5")
-            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
+        for (i in 0 until fNotes.size) {
+            fNotes[i].setOnClickListener {
+                onSelectColor("color${i+1}")
+            }
         }
     }
 
+    private fun onSelectColor(color: String) {
+        dissableAllImagesNote()
+        val intent = Intent(BOTTOM_SHEET_ACTION)
+        intent.putExtra(COLOR_EXTRA, color)
+        LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
+        selectTickFotColor(color)
+    }
+
+    private fun selectTickFotColor(color: String) {
+        val num = color.substring(5).toInt()
+        colorImages[num - 1].setImageResource(R.drawable.ic_tick)
+    }
+
+
     private fun dissableAllImagesNote() {
-        img_note1.setImageResource(0)
-        img_note2.setImageResource(0)
-        img_note3.setImageResource(0)
-        img_note4.setImageResource(0)
-        img_note5.setImageResource(0)
+        colorImages.forEach {
+            it.setImageResource(0)
+        }
     }
 }
