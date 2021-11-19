@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import el.ka.noteapp.utils.MAIN_ACTIVITY
+import el.ka.noteapp.utils.updateColorsArray
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -12,6 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         MAIN_ACTIVITY = this
+        updateColorsArray()
         replaceFragment(HomeFragment.newInstance(), true)
     }
 

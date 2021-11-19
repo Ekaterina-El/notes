@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import el.ka.noteapp.R
 import el.ka.noteapp.entities.Notes
+import el.ka.noteapp.utils.getColorByIndexName
 import kotlinx.android.synthetic.main.item_rv_notes.view.*
 
 class NotesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -25,7 +26,7 @@ class NotesAdapter(private val notesList: List<Notes>): RecyclerView.Adapter<Not
         holder.itemView.tv_note_description.text = noteInfo.noteText
         holder.itemView.tv_note_date_time.text = noteInfo.dateTime
         if (noteInfo.color != null) {
-            holder.itemView.note_cv.setCardBackgroundColor(Color.parseColor(noteInfo.color))
+            holder.itemView.note_cv.setCardBackgroundColor(getColorByIndexName(noteInfo.color!!))
 
         }
     }
